@@ -1,0 +1,47 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SimpleChatApp"
+      xmlns:Models="clr-namespace:SimpleChatApp.Models;assembly=SimpleChatApp.Models" x:Class="SimpleChatApp.pgChat"
+      mc:Ignorable="d"
+      Title="pgChat" d:DesignWidth="494" d:DesignHeight="406" >
+    <Page.Resources>
+        <DataTemplate x:Key="UserItemTemplate">
+            <Grid>
+                <Image x:Name="image" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Source="Controls/guest_user.png"/>
+                <Label x:Name="lblUserName" Content="{Binding Name}" Margin="45,0,0,0" d:LayoutOverrides="HorizontalAlignment" FontWeight="Bold" VerticalAlignment="Top"/>
+                <Label x:Name="lblAction" Content="{Binding Action}" Margin="45,17,0,0" FontFamily="Calibri" FontSize="10.667" d:LayoutOverrides="Height"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ChatItemTemplate">
+            <Grid>
+                <Label x:Name="lblUserName" Content="{Binding Name}" Margin="0,0.329,121.891,0" VerticalAlignment="Top" FontFamily="Calibri"/>
+                <Label x:Name="lblDateTime" Content="{Binding Posted, StringFormat={}{0:d.M.yy HH:mm:ss}}" Margin="178.109,0.329,2,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" FontFamily="Calibri Light"/>
+                <TextBlock x:Name="txtMessage" Text="{Binding Message}" Margin="2,26.289,2,2" TextWrapping="WrapWithOverflow" d:LayoutOverrides="HorizontalAlignment"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+        <DockPanel>
+        <Menu DockPanel.Dock="Top">
+                <MenuItem Name="mnuDisconnect" Header="Disconnect" Height="25" Click="mnuDisconnect_Click">
+            </MenuItem>
+        </Menu>
+            <Grid DockPanel.Dock="Bottom">
+        <ListBox x:Name="lstUsers" HorizontalAlignment="Left" Width="158" ItemTemplate="{StaticResource ResourceKey=UserItemTemplate}" HorizontalContentAlignment="Stretch"  >
+        </ListBox>
+        <ListBox x:Name="lstMessages" Margin="158,0,0,30" ItemTemplate="{StaticResource ResourceKey=ChatItemTemplate}" HorizontalContentAlignment="Stretch">
+            <ListBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFE4E4E4" Offset="0"/>
+                    <GradientStop Color="WhiteSmoke" Offset="1"/>
+                </LinearGradientBrush>
+            </ListBox.Background>
+        </ListBox>
+        <TextBox x:Name="txtMessage" Margin="158,0,0,0" TextWrapping="WrapWithOverflow" Text="" Height="30" VerticalAlignment="Bottom" KeyDown="txtMessage_KeyDown" KeyUp="txtMessage_KeyUp"/>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Page>
