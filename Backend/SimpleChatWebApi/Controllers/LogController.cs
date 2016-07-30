@@ -9,6 +9,7 @@ namespace SimpleChatWebApi.Controllers
     /// For operating with stored messages
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
+    [Authorize]
     public class LogController : ApiController
     {
         /// <summary>

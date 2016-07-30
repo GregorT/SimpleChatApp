@@ -8,7 +8,7 @@ namespace SimpleChatApp.Models
     /// <seealso cref="SimpleChatApp.Models.ObservableObject" />
     public class UserViewModel : ObservableObject
     {
-        private Guid _id;
+        private string _id;
         private string _name;
         private string _action;
 
@@ -18,7 +18,7 @@ namespace SimpleChatApp.Models
         /// <value>
         /// The identifier.
         /// </value>
-        public Guid Id
+        public string Id
         {
             get { return _id; }
             set { SetAndNotify(ref _id, value, () => Id); }

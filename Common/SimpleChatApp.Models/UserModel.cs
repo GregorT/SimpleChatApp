@@ -13,7 +13,7 @@ namespace SimpleChatApp.Models
         /// <value>
         /// The identifier.
         /// </value>
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

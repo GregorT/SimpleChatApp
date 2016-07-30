@@ -1,6 +1,8 @@
-﻿using System;
-using Microsoft.AspNet.SignalR;
-using SimpleChatApp.Models;
+﻿using Microsoft.AspNet.SignalR;
+using SimpleChatWebApi.Handlers;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SimpleChatWebApi.Hubs
 {
@@ -11,41 +13,39 @@ namespace SimpleChatWebApi.Hubs
     public class ChatHub : Hub
     {
         /// <summary>
-        /// Sends the specified message.
+        /// Called when the connection connects to this hub instance.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void Send(MessageModel message)
+        /// <returns>
+        /// A <see cref="T:System.Threading.Tasks.Task" />
+        /// </returns>
+        public override Task OnConnected()
         {
-            Clients.All.sendMessage(message);
+            var identity = Context.User.Identity as ClaimsIdentity;
+            var claim = identity.Claims.FirstOrDefault(p => p.Type == "user_name");
+            var userName = claim.Value;
+            var user = AppVariables.Users.Single(p => p.User.Name == userName);
+            user.ConnectionId = Context.ConnectionId;
+            return Clients.Others.userJoined(user.User);
         }
 
         /// <summary>
-        /// Users the joined.
+        /// Called when a connection disconnects from this hub gracefully or due to a timeout.
         /// </summary>
-        /// <param name="user">The user.</param>
-        private void UserJoined(UserModel user)
+        /// <param name="stopCalled">true, if stop was called on the client closing the connection gracefully;
+        /// false, if the connection has been lost for longer than the
+        /// <see cref="P:Microsoft.AspNet.SignalR.Configuration.IConfigurationManager.DisconnectTimeout" />.
+        /// Timeouts can be caused by clients reconnecting to another SignalR server in scaleout.</param>
+        /// <returns>
+        /// A <see cref="T:System.Threading.Tasks.Task" />
+        /// </returns>
+        public override Task OnDisconnected(bool stopCalled)
         {
-            Clients.Others.userJoined(user);
+            var identity = Context.User.Identity as ClaimsIdentity;
+            var claim = identity.Claims.FirstOrDefault(p => p.Type == "user_name");
+            var userName = claim.Value;
+            var user = AppVariables.Users.Single(p => p.User.Name == userName);
+            AppVariables.Users.Remove(user);
+            return Clients.Others.userLeft(user);
         }
-
-        /// <summary>
-        /// Users the left.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        private void UserLeft(UserModel user)
-        {
-            Clients.Others.userLeft(user);
-        }
-
-        /// <summary>
-        /// Users the typing.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="isIdle">if set to <c>true</c> [is idle].</param>
-        public void UserTyping(Guid id, bool isIdle = true)
-        {
-            Clients.Others.userTyping(id, isIdle);
-        }
-
     }
 }

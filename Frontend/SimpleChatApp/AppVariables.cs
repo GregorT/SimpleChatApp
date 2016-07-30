@@ -11,12 +11,12 @@ namespace SimpleChatApp
     public static class AppVariables
     {
         /// <summary>
-        /// Gets or sets the current user.
+        /// Gets or sets the username.
         /// </summary>
         /// <value>
-        /// The current user.
+        /// The username.
         /// </value>
-        public static UserModel CurrentUser { get; set; }
+        public static string Username { get; set; }
 
         /// <summary>
         /// Gets or sets the hub connection.
@@ -41,6 +41,14 @@ namespace SimpleChatApp
         /// The rest client.
         /// </value>
         public static RestClient restClient { get; set; }
+
+        /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
+        /// <value>
+        /// The access token.
+        /// </value>
+        public static string Token { get; set; }
 
         /// <summary>
         /// Gets or sets the user list.

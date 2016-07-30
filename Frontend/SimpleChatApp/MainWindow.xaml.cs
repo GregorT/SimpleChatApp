@@ -30,6 +30,7 @@ namespace SimpleChatApp
         public void ConnectToHub()
         {
             var connection = new HubConnection(Properties.Settings.Default.ChatServiceUrl);
+            connection.Headers.Add("Authorization", $"Bearer {AppVariables.Token}");
             var proxy = connection.CreateHubProxy("ChatHub");
             AppVariables.hubConnection = connection;
             AppVariables.hubProxy = proxy;
@@ -95,15 +96,8 @@ namespace SimpleChatApp
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (AppVariables.CurrentUser != null)
-            {
-                var request = new RestSharp.RestRequest("logout", RestSharp.Method.POST);
-                request.RequestFormat = RestSharp.DataFormat.Json;
-                request.AddBody(AppVariables.CurrentUser);
-                var response = AppVariables.restClient.Execute(request);
-                if (AppVariables.hubConnection.State == ConnectionState.Connected) AppVariables.hubConnection.Stop();
-                AppVariables.CurrentUser = null;
-            }
+            if (AppVariables.hubConnection.State == ConnectionState.Connected) AppVariables.hubConnection.Stop();
+            AppVariables.Token = null;
         }
     }
 }

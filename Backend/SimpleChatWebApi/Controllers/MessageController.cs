@@ -10,6 +10,7 @@ namespace SimpleChatWebApi.Controllers
     /// Controller for sending messages
     /// </summary>
     /// <seealso cref="SimpleChatWebApi.Controllers.ApiHubController{SimpleChatWebApi.Hubs.ChatHub}" />
+    [Authorize]
     public class MessageController : ApiHubController<ChatHub>
     {
         /// <summary>

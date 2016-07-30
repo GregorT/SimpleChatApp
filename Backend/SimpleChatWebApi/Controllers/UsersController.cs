@@ -1,6 +1,7 @@
 ﻿using SimpleChatApp.Models;
 using SimpleChatWebApi.Handlers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace SimpleChatWebApi.Controllers
@@ -9,6 +10,7 @@ namespace SimpleChatWebApi.Controllers
     /// the user list controller
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
+    [Authorize]
     public class UsersController : ApiController
     {
         /// <summary>
@@ -18,7 +20,7 @@ namespace SimpleChatWebApi.Controllers
         [HttpGet]
         public List<UserModel> List()
         {
-            return AppVariables.Users;
+            return AppVariables.Users.Select(p=>p.User).ToList();
         }
     }
 }

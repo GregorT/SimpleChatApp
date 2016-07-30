@@ -90,6 +90,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AuthorizationErrorModel.cs" />
+    <Compile Include="Models\AuthorizationTokenModel.cs" />
     <Compile Include="pgChat.xaml.cs">
       <DependentUpon>pgChat.xaml</DependentUpon>
     </Compile>

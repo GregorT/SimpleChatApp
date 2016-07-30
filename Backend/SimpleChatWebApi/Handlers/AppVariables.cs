@@ -1,4 +1,5 @@
 ﻿using SimpleChatApp.Models;
+using SimpleChatWebApi.Models;
 using System.Collections.Generic;
 
 namespace SimpleChatWebApi.Handlers
@@ -11,7 +12,7 @@ namespace SimpleChatWebApi.Handlers
         /// <summary>
         /// The users
         /// </summary>
-        public static List<UserModel> Users = new List<UserModel>();
+        public static List<UserServerModel> Users = new List<UserServerModel>();
 
         /// <summary>
         /// The messages

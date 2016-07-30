@@ -1,4 +1,5 @@
-﻿using SimpleChatApp.Models;
+﻿using Microsoft.AspNet.SignalR.Client;
+using SimpleChatApp.Models;
 using System;
 using System.Collections.Specialized;
 using System.Windows;
@@ -63,9 +64,10 @@ namespace SimpleChatApp
             var status = new StatusModel
             {
                 IsIdle = true,
-                UserId = AppVariables.CurrentUser.Id
+                UserId = AppVariables.Username
             };
             typeRequest.RequestFormat = RestSharp.DataFormat.Json;
+            typeRequest.AddHeader("Authorization", $"Bearer {AppVariables.Token}");
             typeRequest.AddObject(status);
             var typeResponse = AppVariables.restClient.Execute(typeRequest);
         }
@@ -84,10 +86,11 @@ namespace SimpleChatApp
                 {
                     LastTyped = DateTime.Now;
                     var typeRequest = new RestSharp.RestRequest("typing", RestSharp.Method.POST);
+                    typeRequest.AddHeader("Authorization", $"Bearer {AppVariables.Token}");
                     var status = new StatusModel
                     {
                         IsIdle = false,
-                        UserId = AppVariables.CurrentUser.Id
+                        UserId = AppVariables.Username
                     };
                     typeRequest.RequestFormat = RestSharp.DataFormat.Json;
                     typeRequest.AddObject(status);
@@ -97,12 +100,13 @@ namespace SimpleChatApp
             }
             if (string.IsNullOrEmpty(txtMessage.Text)) return;
             var request = new RestSharp.RestRequest("message", RestSharp.Method.POST);
+            request.AddHeader("Authorization", $"Bearer {AppVariables.Token}");
             var msg = new MessageModel
             {
                 Message = txtMessage.Text,
-                Name = AppVariables.CurrentUser.Name,
+                Name = AppVariables.Username,
                 Posted = DateTime.Now,
-                UserId = AppVariables.CurrentUser.Id
+                UserId = AppVariables.Username
             };
             request.RequestFormat = RestSharp.DataFormat.Json;
             request.AddObject(msg);
@@ -127,14 +131,9 @@ namespace SimpleChatApp
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void mnuDisconnect_Click(object sender, RoutedEventArgs e)
         {
-            if (AppVariables.CurrentUser == null) return;
-            var request = new RestSharp.RestRequest("logout", RestSharp.Method.POST);
-            request.RequestFormat = RestSharp.DataFormat.Json;
-            request.AddBody(AppVariables.CurrentUser);
-            var response = AppVariables.restClient.Execute(request);
-            AppVariables.hubConnection.Stop();
-            AppVariables.CurrentUser = null;
-            var main = (MainWindow)this.Parent;
+            if (AppVariables.hubConnection.State== ConnectionState.Connected) AppVariables.hubConnection.Stop();
+            AppVariables.Token = null;
+            var main = (MainWindow)Parent;
             main.Content = new pgLogin();
         }
     }

@@ -13,7 +13,7 @@ namespace SimpleChatApp.Models
         /// <value>
         /// The user identifier.
         /// </value>
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is idle.

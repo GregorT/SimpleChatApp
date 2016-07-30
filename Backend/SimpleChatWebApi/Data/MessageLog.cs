@@ -25,7 +25,7 @@ namespace SimpleChatWebApi.Data
         /// <value>
         /// The user identifier.
         /// </value>
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the user.

@@ -8,6 +8,7 @@ namespace SimpleChatWebApi.Controllers
     /// Controller for user typing status
     /// </summary>
     /// <seealso cref="SimpleChatWebApi.Controllers.ApiHubController{SimpleChatWebApi.Hubs.ChatHub}" />
+    [Authorize]
     public class TypingController : ApiHubController<ChatHub>
     {
         /// <summary>
